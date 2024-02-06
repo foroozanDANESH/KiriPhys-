@@ -14,14 +14,19 @@ module.exports = {
     devServer: {
         contentBase: './dist'
     },
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                loader: 'babel-loader',
+module: {
+  rules: [
+    {
+      test: /\.(js|jsx)$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
                 query: {
-                    presets: ['es2015', 'react']
-                },
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ]
+}
                 include: path.join(__dirname, '/src')
             },
             { test: /\.json$/, loader: 'json-loader' },
