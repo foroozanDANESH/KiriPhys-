@@ -1,0 +1,34 @@
+[
+    {
+        "Week": "Week 1",
+        "Exercise_Hours": 4,
+        "Calories_Consumed": 2500,
+        "Weight_kg": 70,
+        "Mood_Rating_out_of_10": 7,
+        "Meals_Cooked_at_Home": 5
+    },
+    {
+        "Week": "Week 2",
+        "Exercise_Hours": 3,
+        "Calories_Consumed": 1600,
+        "Weight_kg": 71,
+        "Mood_Rating_out_of_10": 6,
+        "Meals_Cooked_at_Home": 3
+    },
+    {
+        "Week": "Week 3",
+        "Exercise_Hours": 9,
+        "Calories_Consumed": 2100,
+        "Weight_kg": 69,
+        "Mood_Rating_out_of_10": 8,
+        "Meals_Cooked_at_Home": 6
+    },
+    {
+        "Week": "Week 4",
+        "Exercise_Hours": 6,
+        "Calories_Consumed": 1400,
+        "Weight_kg": 72,
+        "Mood_Rating_out_of_10": 5,
+        "Meals_Cooked_at_Home": 2
+    }
+]

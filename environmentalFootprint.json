@@ -1,0 +1,6 @@
+[
+    { "Metric": "Week 1", "Plastic_Waste": 4, "Electricity_Usage": 70, "Transport_Rides": 2, "Meat_Consumption": 2 },
+    { "Metric": "Week 2", "Plastic_Waste": 3, "Electricity_Usage": 30, "Transport_Rides": 12, "Meat_Consumption": 4 },
+    { "Metric": "Week 3", "Plastic_Waste": 6, "Electricity_Usage": 90, "Transport_Rides": 4, "Meat_Consumption": 8 },
+    { "Metric": "Week 4", "Plastic_Waste": 9, "Electricity_Usage": 40, "Transport_Rides": 11, "Meat_Consumption": 15 }
+]

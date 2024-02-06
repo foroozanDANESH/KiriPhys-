@@ -1,0 +1,42 @@
+[
+    {
+        "Week": "Week 1",
+        "Steps": 740,
+        "Sleep": 6,
+        "Calorie-intake": 1800,
+        "Water-intake": 4,
+        "Weight": 70
+    },
+    {
+        "Week": "Week 2",
+        "Steps": 1202,
+        "Sleep": 8,
+        "Calorie-intake": 1500,
+        "Water-intake": 2,
+        "Weight": 69
+    },
+    {
+        "Week": "Week 3",
+        "Steps": 300,
+        "Sleep": 5,
+        "Calorie-intake": 2400,
+        "Water-intake": 1,
+        "Weight": 70
+    },
+    {
+        "Week": "Week 4",
+        "Steps": 450,
+        "Sleep": 7,
+        "Calorie-intake": 1200,
+        "Water-intake": 6,
+        "Weight": 71
+    },
+    {
+        "Week": "Average",
+        "Steps": 673,
+        "Sleep": 6.5,
+        "Calorie-intake": 1725,
+        "Water-intake": 3.25,
+        "Weight": 73
+    }
+]

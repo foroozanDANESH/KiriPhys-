@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization Tool</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+       body {
+    font-family:'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.variable-label {
+    font-size: 12px; /* Adjust the value as needed */
+
+}
+
+.info-icon {
+  display: inline-block;
+  margin-left: 5px;
+  cursor: help;
+  border: 1px solid #555; /* Border color can be changed as needed */
+  border-radius: 50%;
+  width: 15px; /* Diameter of the circle */
+  height: 15px; /* Diameter of the circle */
+  text-align: center;
+  line-height: 15px; /* Center the 'i' vertically */
+  background-color:#DBA800; /* Background color of the circle */
+  color: black; /* Color of the 'i' */
+  font-size: 14px; /* Size of the 'i' */
+  /* Make the 'i' bold */
+}
+.info-icon2{
+  display: inline-block;
+  margin-left: 5px;
+  cursor: help;
+  border: 1px solid #555; /* Border color can be changed as needed */
+  border-radius: 50%;
+  width: 15px; /* Diameter of the circle */
+  height: 15px; /* Diameter of the circle */
+  text-align: center;
+  line-height: 15px; /* Center the 'i' vertically */
+  background-color:#ffffff; /* Background color of the circle */
+  color: black; /* Color of the 'i' */
+  font-size: 14px; /* Size of the 'i' */
+  /* Make the 'i' bold */
+}
+
+.clickable-operation {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+
+.container {
+    display: flex;
+    height: 100vh; /* Set the container to the full viewport height */
+}
+
+.table-wrapper {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-height: 300px; /* Or any value that suits your layout */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.controls {
+    flex: 1;
+    padding: 20px;
+    border-right: 1px solid black;
+    box-sizing: border-box; 
+    overflow-y: auto; /* Make the controls container scrollable */
+    height: 100vh; /* Set the height of the controls to the viewport height */
+}
+
+
+.visualization {
+    overflow: hidden;
+    min-width: 700px;
+    flex-grow: 1;
+}
+.input-flex-container {
+    display: flex; /* Align children inline */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space out children */
+    gap: 10px; /* Space between input and indicator */
+}
+
+.input-flex-container input {
+    flex-grow: 1;/* This will allow the input to grow and fill the container */
+    margin-right: 5px; /* This adds some space between the input and the indicator */
+}
+
+.header-indicator {
+    white-space: nowrap; /* Prevents the indicator from wrapping */
+    padding-left: 5px; /* Adds some space between the text and the input */
+    color: #DBA800; /* Sets the color */
+    font-size: 13px; /* Sets the font size */
+}
+
+.controls,
+.visualization {
+    overflow-y: auto; /* Add scroll to each panel if content overflows vertically */
+}
+
+
+#divider {
+    background: #ccc; /* Change to a visible color */
+    width: 5px; /* You can adjust the width to make it more noticeable */
+    cursor: ew-resize;
+    height: 100vh;
+    position: relative; /* This ensures that the divider is properly positioned */
+    z-index: 10; /* This ensures that the divider is above other elements */
+    opacity: 1; /* Make sure it's fully visible by default */
+    visibility: visible; /* Ensure it's not set to 'hidden' */
+}
+
+
+svg {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    display: block;
+}
+
+/* General styles for labels and inputs */
+.label,
+input,
+select {
+    display: block;
+    margin-bottom: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+h3,
+.data-label, 
+.control-title {
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 1px;
+    background-color: #DBA800;
+    border-radius: 2px;
+
+    font-family: Arial, sans-serif; 
+    font-size: 16px;
+    font-weight:bolder;
+}
+
+/* Styles for tables and options */
+#dataset-table th {
+    background-color:  rgba(253, 216, 53, 0.409); /* your existing header row background color */
+    cursor: default;
+    background-color: #f4f4f4; /* Light grey background to stand out */
+    color: #333; /* Dark text for contrast */
+    padding: 10px; /* More padding for a button-like appearance */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+#dataset-table td {
+    cursor: pointer;
+    padding: 4px 8px;
+    border: 1px solid black;
+    font-weight: normal;
+    white-space: nowrap; /* This will prevent wrapping and give a neater appearance */
+    overflow: hidden; /* Ensures content doesn't overflow */
+    text-overflow: ellipsis; /* Adds an ellipsis to overflowing content */
+    max-width: 100px; /* Adjust to your preferred maximum width */
+}
+
+#dataset-table td:hover {
+    background-color: #dba80068; /* Change to your preferred hover color */
+}
+
+.divisor {
+    text-decoration: underline;
+    cursor: pointer; /* Indicates the divisor is clickable */
+}
+
+
+#datasets {
+    width: flex; /* Adjust this width as needed for your layout */
+    display: block;
+    margin-left: 0; /* Aligns to the left edge of the parent container */
+    margin-bottom: 10px;  /* Adjust the space below the dropdown as needed */
+}
+
+
+#dataset-table {
+    font-size: 0.8em; 
+ max-height: 400px; /* Or any other value that fits well in your layout */
+    overflow-y: auto; 
+
+}
+#dataset-table th,
+#dataset-table td {
+    border: 1px solid black;
+    font-weight: normal;
+}
+
+#dataset-table tr td:first-child {
+    cursor: default; /* Resets the cursor to default */
+    background-color: transparent; /* Resets the background to transparent */
+}
+
+#dataset-table tr td:first-child:hover {
+    background-color: transparent; /* Keeps the background transparent on hover */
+}
+#dataset-table th:hover {
+    background-color: #f4f4f4; /* Slightly darker background on hover */
+}
+
+.adjustable-header, .adjusted-column {
+    background-color: #ffddcc; /* Light salmon pink for clarity */
+}
+
+
+#dataset-table .adjusted-column {
+    background-color: #ffddcc; /* Choose a color that stands out */
+}
+
+#dataset-table th.adjustable-header {
+    background-color: #ffddcc; /* Ensure the header has the same background color */
+    cursor: pointer; /* Indicates the header is clickable */
+}
+
+#dataset-table .divisor {
+    text-decoration: underline;
+    cursor: default; /* Indicates the divisor is clickable */
+}
+
+
+#dataset-table th.adjustable-header .divisor {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+/* Section-specific styles Instruction and data set title */
+.instruction-label, .data-label {
+    box-sizing: border-box;
+    display: block;
+    text-align: center;
+    margin: 0; /* Adjusted margin to 0 */
+    border-bottom: 2px solid #000; /* solid line under the text */
+    padding-bottom: 5px;
+    padding-top: 1px;
+    border-radius: 0; /* Set border-radius to 0 for straight edges */
+    background-color: white;
+    width: 100%; /* Ensuring full width */
+    margin-top: 5px; /* There should be no space between 20 and px */
+    margin-bottom: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+.right-section {
+    /* Instructions, Slider, and Legend section */
+    flex: 1;  /* Adjust based on preference */
+    padding: 20px;
+    overflow-y: auto;
+    border-left: 1px solid #ccc; /* Separates from the middle section */
+}
+
+.data-section,
+.control-group,
+.instruction-box {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.instruction-box {
+    background-color: white;
+}
+
+
+
+visualization-tabs {
+    background: #f1f1f1;
+    overflow: hidden;
+    width: 100%; /* Ensure it takes full width */
+    display: flex;
+}
+
+.tablink {
+    flex-grow: 1;
+    background-color: #f1f1f1;
+    color: black;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 20px;
+    width: 50%;
+    display: inline-block;
+  }
+
+.tablink:hover {
+    background-color: #ddd;
+}
+
+/* Style the tab content */
+.design {
+    display: relative;
+    height: calc(100% - 40px); /* Make sure it takes full height */
+}
+
+.visualization-tabs {
+    display: flex;
+    width: 100%;
+}
+
+.tablink {
+    flex: 1;  /* distribute available space among buttons */
+}
+
+/* Adding some visual separation between buttons */
+.tablink:not(:last-child) {
+    margin-right: 4px;
+}
+#downloadButton {
+    background-color:  #DBA800;
+    color: black;  /* Text color */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#startOverBtn {
+    background-color:  #DBA800;;
+    color: black;  /* Text color */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+th:hover .delete-btn {
+    display: inline; /* Show on hover */
+}
+
+
+
+.design svg {
+    width: 100%;
+    height: 90%; /* This ensures that the SVG takes up most of the .design container, but leaves room for the legend */
+    display: block;
+    border: 1px solid #ddd; /* Optional border */
+}
+
+.legend {
+    width: 100%;
+    height: 1%; /* This ensures the legend takes up the remaining space */
+    
+    padding: 10px;
+    font-size: 14px;
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    text-align: left;
+}
+
+
+/* .manual-input {
+    border: 2px solid black;
+} */
+
+/* Style for data input (drag and drop) */
+.data-input {
+    border: 2px #fdd835;
+    background-color: #fdd8353a;  /* A light blue shade */
+}
+
+
+.row-header {
+    cursor: pointer; /* Clickable cursor */
+
+    background-color: #DBA800; /* color of your choice */
+    /* any other styling you want to apply to row headers */
+}
+.row-header:hover {
+    /* Styles for hover state of row headers */
+    /* Example: slightly darker background */
+    background-color: #b89000; 
+}
+
+/* Styles for the active row */
+.active-row {
+    background-color: #f9f9f9; /* Set to your desired active row color */
+}
+
+.highlighted-cell {
+    background-color: #ffcc00; /* Example color, change as needed */
+}
+
+
+#downloadBtn:hover {
+    background-color: #fdd835;  /* Slightly different yellow on hover for a button press effect */
+}
+.inactive-row {
+  opacity: 0.2; /* or any other styling to indicate inactive state */
+}
+
+
+/* CSS for persistent row header styles */
+.row-header {
+    background-color: #DBA800; /* The same color as your column headers */
+    /* ... other styles ... */
+}
+
+th.row-header {
+    background-color: #DBA800; /* Or whatever color you want */
+}
+
+/* To keep the header row unchanged */
+
+
+/* This targets the spin button inside the input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1 !important;
+  -webkit-appearance: inner-spin-button !important;
+  display: block !important;
+}
+
+/* This targets the clear button in Edge and IE */
+input[type="number"]::-ms-clear {
+  display: none;
+}
+
+/* Container for all sliders, giving it a box-like appearance */
+.slider-container-box {
+    border: 2px solid #000; /* Example border */
+    padding: 10px; /* Example padding */
+    margin-bottom: 20px; /* Space between each box */
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+/* Individual slider container */
+.slider-container {
+    margin-top: 20px; /* Add space above the slider */
+    margin-bottom: 70px; /* Add space below the slider */
+}
+
+.slider-description-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+
+
+.slider-container .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #DBA800;
+    cursor: default;
+    border-radius: 50%;
+
+}
+
+.slider-image {
+    width: 60px;
+    height: auto;
+    /* Adjust margin if needed */
+}
+
+/* If you want the label text to be above the slider, use this */
+.slider-description {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+
+}
+
+/* Align the 0 and 100 labels properly */
+.slider-number.left,
+.slider-number.right {
+font-size: 12px;
+    /* Adjust position if needed */
+}
+
+.slider-container .slider {
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: #d2d1cc;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+/* Description above the slider */
+.slider-description {
+    text-align: left; /* Center the text */
+    margin-bottom: 50px; /* Space between the description and the slider */
+}
+
+/* Style for the sliders */
+.slider-container input[type=range] {
+   appearance: none; /* Remove default appearance for WebKit browsers */
+    width: 100%; /* Full width of the container */
+    height: 5px; /* Increased height for a wider track */
+    background: #ccd2cc; /* Same background color for both */
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    margin: 0 0px; /* Add some space on the sides */
+   
+}
+/* Style for the slider thumb for WebKit browsers */
+.slider-container input[type=range]::-webkit-slider-thumb {
+
+ -webkit-appearance: none; /* Remove default appearance */
+    appearance: none;
+    width: 8px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    background: #DBA800; /* Example thumb color */
+    border-radius: 0%; /* Make the thumb circular */
+}
+
+
+
+/* Adjust the side number styles to match the new slider height */
+.slider-number.left,
+.slider-number.right {
+    font-size: 16px; /* Match your design */
+
+}
+
+
+/* Images to the left and right of the slider */
+.slider-image.left {
+    width: 50px; /* Adjust based on your image size */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: -20px; /* Space between image and slider */
+    margin-top: 40px;
+
+}
+
+.slider-image.right {
+    width: 60px; /* Adjust based on your image size */
+    height: auto; /* Maintain aspect ratio */
+    margin-left: -20px; /* Space between slider and image */
+margin-top: 40px;
+}
+
+/* Container for the slider and images */
+.slider-with-images {
+    display: flex;
+    align-items: center;
+}
+
+/* Clear float */
+.slider-with-images::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Main container styles */
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.slider-value {
+    display: inline-block;
+    margin-left: 10px; /* Adjust as needed */
+color: #c39600;
+font-size: smaller;}
+
+
+.left-section {
+    width: calc(100% - 200px); /* Adjust as necessary */
+    overflow: auto;
+}
+
+.divider {
+    width: 5px;
+    cursor: col-resize;
+    background-color: #ccc;
+    height: 100vh;
+}
+
+.right-section {
+    flex-grow: 1;
+    width: 300px; /* Adjust as necessary */
+    overflow: auto;
+}
+
+body {
+    user-select: none; /* Non-selectable text */
+}
+ 
+.warning {
+    margin-bottom: 10px; /* Adds space below each warning message */
+    display: block; /* Ensure each warning is on a new line */
+}
+
+
+.column-header-indicator {
+    color: blue; /* Change the color to blue */
+    text-decoration: underline; /* Add underline to indicate clickability */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+    margin-left: 5px; /* Optional: Add some space between the input box and the header */
+    font-size: 14px; /* Adjust font size as needed */
+}
+
+ 
+ </style>
+</head>
+
+<body>
+  
+  <div class="container">
+    <div class="controls">
+
+  
+      <!-- Dataset Section -->
+      <div class="data-section">
+          <label class="data-label">Data Set</label>
+          <p> Select a data set from the dropdown menu. To divide column values, click on their headers. </p>
+          <select id="datasets">
+              <option value="default" selected>Manual Input</option>
+              <option value="co2Emission">CO2 Emission</option>
+              <option value="environmentalFootprint">Environmental Footprint</option>
+   
+              <option value="healthTracking">Health Tracking</option>
+              <option value="HabitsWellbeing">Habits Tracking</option>
+              <option value="FitnessandDiet">Diet Tracking</option>
+            </select>
+            <div class="table-wrapper">
+                <table id="dataset-table">
+                    
+                    <!-- Table content -->
+                </table>
+            </div>
+        </div>
+        <!-- Shape Section -->
+      
+        <div class="control-group">  
+            <label class="instruction-label">Variables</label>
+          
+            <h3 class="control-title">Shape
+            <span class="info-icon" data-tippy-content="Define the overall shape and appearance of your design in this section.">?</span>
+            </h3>
+            <div>
+          
+               
+                
+        
+            <label for="shape-selector">Select</label>
+            
+                <select id="shape-selector">
+                    <option value="polygon">Polygon</option>
+                    <option value="circle">Circle</option>
+                    <option value="ellipse">Ellipse</option>
+                    <option value="line">Line</option>
+            
+                </select>
+            </div>
+        
+            
+            
+                <!-- Polygon inputs -->
+                <div id="polygon-container">
+                    <div class="input-flex-container">
+                      <label for="size">Min Size</label>
+                      <input type="number" id="size" name="size" class="input-field" data-label="Size" value="10" />
+                      <span class="header-indicator" id="size-indicator"></span>
+                    </div>
+                    <div class="input-flex-container">
+                      <label for="poly-sides">Sides</label>
+                      <input type="number" id="poly-sides" name="poly-sides" class="input-field" data-label="Number of sides" value="3" />
+                      <span class="header-indicator" id="sides-indicator"></span>
+                    </div>
+                  </div>
+
+<!-- Circle inputs -->
+<div id="circle-container" style="display: none;">
+    <div class="input-flex-container">
+        <label for="radius">Radius</label>
+        <input type="number" id="radius" name="radius" class="input-field" value="10" />
+        <span class="header-indicator"></span>
+    </div>
+    <div class="input-flex-container">
+        <label for="arc-extent" >Arc Extent</label>
+        <input type="range" id="arc-extent" name="arc-extent" min="0" max="360" value="360" />
+        <span class="header-indicator"></span>
+    </div>
+    <span id="arc-extent-display">360</span> °
+    <div class="input-flex-container">
+        <label for="arc-orientation" >Arc Orientation</label>
+        <input type="range" id="arc-orientation" min="0" max="360" step="1" value="0" />
+        <span class="header-indicator"></span>
+    </div>
+    <span id="arc-orientation-display">0</span>°
+</div>
+
+<!-- Ellipse inputs -->
+<div id="ellipse-container" style="display: none;">
+    <div class="input-flex-container">
+        <label for="ellipse-width">Width</label>
+        <input type="number" id="ellipse-width" value="30" />
+        <span class="header-indicator"></span>
+    </div>
+
+    <div class="input-flex-container">
+        <label for="ellipse-height">Height</label>
+        <input type="number" id="ellipse-height" value="50" />
+        <span class="header-indicator"></span>
+    </div>
+    
+    <div class="input-flex-container">
+        <label>Ellipse Orientation</label>
+        <input type="range" id="ellipse-orientation" min="0" max="360" value="0" step="1" />
+        <span class="header-indicator"></span>
+    </div>
+    <span id="ellipse-orientation-display">0</span>°
+
+    
+    <div class="input-flex-container">
+        <label>Ellipse Extent</label>
+        <input type="range" id="ellipse-extent" min="0" max="360" value="360" step="1" />
+        <span class="header-indicator"></span>
+    </div>
+    <span id="ellipse-extent-display">360</span>°
+</div>
+
+<!-- Line inputs -->
+<div id="line-container" style="display: none;">
+    <label for="line-height">Height</label>
+    <input type="number" id="line-height" name="line-height" value="200" />    
+</div>
+
+            
+
+    <h3 class="control-title">Loop
+        <span class="info-icon" data-tippy-content="Set the number and width of loops.">?</span>
+    </h3>
+    <div class="input-flex-container">
+        <label for="loop-number">Number</label>
+        <input type="number" id="loop-number" name="loop-number" class="input-field" data-label="Number of Loops" value="5" />
+        <span class="header-indicator"></span>
+    </div>
+    <div class="input-flex-container">
+        <label for="loop-width">Width</label>
+        <input type="number" id="loop-width" name="loop-width" data-label="Width of Loops" class="input-field" value="20" />
+        <span class="header-indicator"></span>
+    </div>
+
+
+<!-- Joint Section -->
+
+    <h3 class="control-title">Joint
+        <span class="info-icon" data-tippy-content="Adjust the joint properties.">?</span>
+    </h3>
+    <div class="input-flex-container">
+        <label for="joint-number">Number</label>
+        <input type="number" id="joint-number" name="joint-number" class="input-field" data-label="Number of Joints"  value="6" />
+        <span class="header-indicator"></span>
+    </div>
+    <div class="input-flex-container">
+        <label for="joint-width">Width</label>
+        <input type="number" id="joint-width" name="joint-width" class="input-field" data-label="Width of Joints" value="2" />
+        <span class="header-indicator"></span>
+    </div>
+
+                <div>
+              </div>
+            </div>
+            
+        </div>
+        
+        <div id="divider"></div>
+
+
+
+        <div class="visualization">
+
+
+<!-- Visualization Area for Design1 -->
+<div id="Design1" class="design">
+    <svg width="100%" height="90%"></svg>
+    <div id="legendDesign1" class="legend"></div>
+</div>
+            <!-- Visualization Area for Design2 -->
+            <div id="Design2" class="design" style="display:none">
+                <svg width="100%" height="90%"></svg>
+                <div id="legendDesign2" class="legend">
+                </div>
+            </div>
+        
+            <!-- Visualization Tabs -->
+            <div class="visualization-tabs">
+                <button id="startOverBtn">Start Over</button>
+                <button class="tablink" onclick="openDesign('Design1')"> </button>
+                <button id="downloadButton">Download SVG</button>
+            </div>
+
+        </div>
+        
+
+    <!-- Right Section: Instructions, Slider, and Legend -->
+    <div class="divider" id="divider"></div>
+    <div class="right-section">
+        <!-- Instruction Section -->
+        <div class="instruction-section">
+            <div class="instruction-box">
+                <label class="instruction-label">Hint</label>
+                <p> Define the variables manually or drag the dataset values to the respective input fields to update the pattern.</p>
+            </div>
+        </div>
+ 
+
+
+        <!-- Data Manipulation Modal -->
+<div id="dataManipulationModal" style="display:none;">
+    <p>Adjust the Value:</p>
+    <input type="text" id="manipulationValue" />
+    <button onclick="applyManipulation()">Apply</button>
+    <button onclick="closeModal()">Close</button>
+</div>
+
+<!-- Unified Slider Container -->
+<div class="slider-container-box">
+    <label class="instruction-label">Physical Indicators</label>
+    
+    <!-- Stiffness-Flimsiness Slider Section -->
+    <div class="slider-container">
+        <div class="slider-description-container">
+            <img src="images/bb-Model.png" alt="Stiff" class="slider-image left">
+            
+            <!-- Adjusted span placement inside the p tag -->
+            <p class="slider-description">Expandibility<span class="info-icon2" data-tippy-content="shows the expandibility of the design!">?</span></p>
+
+            <img src="images/bb-Model 2.png" alt="Flimsy" class="slider-image right">
+        </div>
+        <input type="range" id="stiffnessFlimsinessRange" min="0" max="100" value="50" step="1" class="slider">
+        <span id="stiffnessFlimsinessValue" class="slider-value">50</span> <!-- Value label -->
+    </div>
+    
+
+    
+    <!-- Size Indicator Slider Section -->
+    <div class="slider-container">
+        <div class="slider-description-container">
+            <span class="slider-number left">0 cm</span>
+            <p class="slider-description">Size<span class="info-icon2" data-tippy-content="Shows the biggest size of the design.">?</span></p>
+            <span class="slider-number right">100 cm</span>
+        </div>
+        <input type="range" id="sizeIndicatorRange" min="0" max="100" value="50" step="1" class="slider">
+        <span id="sizeIndicatorValue" class="slider-value"></span> <!-- Apply slider-value class -->
+    </div>
+    
+    <!-- Countability Indicator Slider -->
+    <div class="slider-container">
+        <div class="slider-description-container">
+            <span class="slider-number left">Low</span>
+            <p class="slider-description">Countability <span class="info-icon2" data-tippy-content="Shows the countability of the cut elements in your design.">?</span></p>
+            <span class="slider-number right">High</span>
+        </div>
+        <input type="range" id="countabilityRange" min="0" max="100" value="50" class="slider">
+        <span id="countabilityValue" class="slider-value">50</span> <!-- Value label -->
+    </div>
+</div>
+
+
+
+        <!-- Legend -->
+        <div id="legendDesign1" class="legend">
+            <!-- Existing legend HTML here -->
+        </div>
+
+
+    </div>
+</div>
+  
+  <script>
+  // Your tab-switching JavaScript here
+
+  
+  function openDesign(designName) {
+    // Get all elements with class="design" and hide them
+    var i, designContent;
+    designContent = document.getElementsByClassName("design");
+    for (i = 0; i < designContent.length; i++) {
+        designContent[i].style.display = "none";
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(designName).style.display = "block";
+}
+
+
+  // Ensure the script runs after the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const divider = document.getElementById('divider');
+    const controls = document.querySelector('.controls');
+    const visualization = document.querySelector('.visualization');
+    let isDragging = false;
+
+    // Function to execute while resizing
+    function resize(e) {
+      // Calculate new width for the controls panel
+      let newWidth = e.clientX;
+      let minWidth = 200; // Minimum width of the controls panel
+      let maxWidth = window.innerWidth - 200; // Maximum width of the controls panel, keep 200px for the visualization at least
+
+      // Enforce the minimum and maximum width
+      newWidth = Math.max(minWidth, newWidth);
+      newWidth = Math.min(maxWidth, newWidth);
+
+      // Apply the new width to controls and adjust the visualization panel accordingly
+      controls.style.width = `${newWidth}px`;
+      visualization.style.flexBasis = `calc(100% - ${newWidth}px)`;
+    }
+
+    // Start resizing on mousedown
+    divider.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      isDragging = true;
+    });
+
+    // Add mousemove listener to the window to capture dragging across the entire screen
+    window.addEventListener('mousemove', function(e) {
+      if (isDragging) {
+        resize(e);
+      }
+    });
+
+    // Stop resizing on mouseup
+    window.addEventListener('mouseup', function(e) {
+      if (isDragging) {
+        isDragging = false;
+      }
+    });
+  });
+
+
+function downloadSVG(svgElement, filename) {
+    // 1. Serialize SVG to string
+    var serializer = new XMLSerializer();
+    var svgString = serializer.serializeToString(svgElement);
+
+    // 2. Encode SVG string
+    var encodedData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
+
+    // 3. Create download link
+    var link = document.createElement('a');
+    link.setAttribute('href', encodedData);
+    link.setAttribute('download', filename);
+
+    // 4. Trigger download
+    document.body.appendChild(link);  
+    link.click();
+    
+    // 5. Clean up
+    document.body.removeChild(link);
+}
+
+
+document.getElementById('downloadButton').addEventListener('click', function() {
+    var svgElement = document.querySelector('.design svg');  // Adjust selector as needed
+    downloadSVG(svgElement, 'downloaded_pattern.svg');
+});
+
+// Optionally: Automatically open a design on page load
+openDesign('Design1');
+</script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script src="../src/index.js">
+
+
+</script>
+
+  </body>
+</html>

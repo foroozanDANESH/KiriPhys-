@@ -1,0 +1,42 @@
+[
+    {
+        "Week": "Week 1",
+        "Calling_Hours": 4,
+        "Social_Media_Hours": 15,
+        "Reading_Hours": 3,
+        "Gaming_Hours": 5,
+        "Sleep_Hours": 6.5,
+        "Mood_Rating_out_of_10": 6,
+        "Productivity_Rating_out_of_10": 5
+    },
+    {
+        "Week": "Week 2",
+        "Calling_Hours": 3.5,
+        "Social_Media_Hours": 18,
+        "Reading_Hours": 2.5,
+        "Gaming_Hours": 7,
+        "Sleep_Hours": 6,
+        "Mood_Rating_out_of_10": 5,
+        "Productivity_Rating_out_of_10": 4
+    },
+    {
+        "Week": "Week 3",
+        "Calling_Hours": 5,
+        "Social_Media_Hours": 13,
+        "Reading_Hours": 4,
+        "Gaming_Hours": 4.5,
+        "Sleep_Hours": 7,
+        "Mood_Rating_out_of_10": 7,
+        "Productivity_Rating_out_of_10": 6
+    },
+    {
+        "Week": "Week 4",
+        "Calling_Hours": 3,
+        "Social_Media_Hours": 17,
+        "Reading_Hours": 3.5,
+        "Gaming_Hours": 6,
+        "Sleep_Hours": 6.5,
+        "Mood_Rating_out_of_10": 6,
+        "Productivity_Rating_out_of_10": 5.5
+    }
+]
