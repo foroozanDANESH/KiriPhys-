@@ -1439,18 +1439,25 @@ document.querySelector('#shape-selector').addEventListener('change', function(e)
     
     
 
-    document.querySelector('#datasets').addEventListener('change', function(e) {
-        if (e.target.value !== "default") {
-            const filePath = `../${e.target.value}.json`;
-            console.log("Attempting to load:", filePath);
+document.querySelector('#datasets').addEventListener('change', function(e) {
+    if (e.target.value !== "default") {
+        // Reference the files from the root of the dist directory
+        const filePath = `${e.target.value}.json`; // No '../' needed
+        console.log("Attempting to load:", filePath);
 
-            d3.json(filePath).then(data => {
-                drawTable(data);
-            });
-        } else {
-            document.querySelector('#dataset-table').style.display = "none"; // Hide table for manual input
-        }
-    });
+        d3.json(filePath).then(data => {
+            // Your logic to handle the loaded data
+            drawTable(data);
+        }).catch(error => {
+            console.error("Failed to load the dataset:", error);
+            // Handle error, maybe show a message to the user
+        });
+    } else {
+        // Handle the "Manual Input" case
+        document.querySelector('#dataset-table').style.display = "none"; // Hide table for manual input
+    }
+});
+
 
 
 
