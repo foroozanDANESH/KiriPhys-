@@ -1448,10 +1448,10 @@ document.querySelector('#datasets').addEventListener('change', function(e) {
             drawTable(data);
         }).catch(error => {
             console.error("Failed to load the dataset:", error);
-            // Handle the error (e.g., show a message to the user)
+            // Handle the error here
         });
     } else {
-        document.querySelector('#dataset-table').style.display = "none"; // Hide table for manual input
+        document.querySelector('#dataset-table').style.display = "none"; // Hide the table for manual input
     }
 });
 
