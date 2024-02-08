@@ -1441,15 +1441,14 @@ document.querySelector('#shape-selector').addEventListener('change', function(e)
 
 document.querySelector('#datasets').addEventListener('change', function(e) {
     if (e.target.value !== "default") {
-        // Corrected file path, assuming the JSON file is in the root of the dist directory
-        const filePath = `${e.target.value}.json`;
+        const filePath = `${e.target.value}.json`; // Corrected file path
         console.log("Attempting to load:", filePath);
 
         d3.json(filePath).then(data => {
-            // Logic to handle the loaded data
+            drawTable(data);
         }).catch(error => {
             console.error("Failed to load the dataset:", error);
-            // Handle the error
+            // Handle the error here
         });
     } else {
         document.querySelector('#dataset-table').style.display = "none"; // Hide the table for manual input
