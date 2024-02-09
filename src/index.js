@@ -1849,9 +1849,9 @@ if (joints > 20 && jointWidth > 10) {
 function calculateExpandability() {
     // Define the weights for each parameter
     const weightSize = 1; // Positive impact
-    const weightNumLoops = 2; // Positive impact
+    const weightNumLoops = 4; // Positive impact
     const weightWidthLoops = -.5; // Negative impact
-    const weightNumJoints = -1; // Negative impact
+    const weightNumJoints = -2; // Negative impact
     const weightWidthJoints = -1; // Negative impact
 
     // Get the parameter values
