@@ -1555,7 +1555,10 @@ if (jointWidth > 20) {
 }
 
 
-
+    // Add warning if expandability score is 0
+    if (expandabilityScore === 0) {
+        addWarning(instructionBox, "Expandability is minimal. Consider adjusting design parameters for better expandability.");
+    }
 
 // Too many joints warning
 if (joints > 20 && jointWidth > 5) {
