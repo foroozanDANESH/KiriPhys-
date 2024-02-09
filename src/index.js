@@ -1554,6 +1554,8 @@ if (jointWidth > 20) {
     addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
 }
 
+ let expandabilityScore = calculateExpandability();
+    console.log("Expandability Score:", expandabilityScore);
 
     // Add warning if expandability score is 0
     if (expandabilityScore === 0) {
