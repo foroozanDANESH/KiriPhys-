@@ -1558,7 +1558,7 @@ if (jointWidth > 20) {
 
 
 // Too many joints warning
-if (joints > 20 && jointWidth > 10) {
+if (joints > 20 && jointWidth > 5) {
     addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
 }
 
