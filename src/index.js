@@ -1554,12 +1554,23 @@ if (jointWidth > 20) {
     addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
 }
 
- let expandabilityScore = calculateExpandability();
-    console.log("Expandability Score:", expandabilityScore);
+    let expandabilityScore = calculateExpandability();
+    const instructionBox = document.querySelector('.instruction-box');
 
-    // Add warning if expandability score is 0
-    if (expandabilityScore === 0) {
-        addWarning(instructionBox, "Expandability is minimal. Consider adjusting design parameters for better expandability.");
+    // Clear existing warnings
+    instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
+
+    // Add specific warnings based on expandability score
+    if (expandabilityScore <= 0) {
+        if (joints > 20) {
+            addWarning(instructionBox, "Too many joints are reducing expandability. Try reducing the number of joints.");
+        } else if (jointWidth > 20) {
+            addWarning(instructionBox, "Joints are too wide, negatively impacting expandability. Consider reducing joint width.");
+        } else if (loopWidth < 10) {
+            addWarning(instructionBox, "Loops are too narrow, affecting expandability. Increasing loop width might help.");
+        } else {
+            addWarning(instructionBox, "Expandability is too low. Adjust the design parameters for better expandability.");
+        }
     }
 
 // Too many joints warning
