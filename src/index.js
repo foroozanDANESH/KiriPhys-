@@ -1509,58 +1509,52 @@ document.querySelector('#datasets').addEventListener('change', function(e) {
     
         return cmDimensions;
     }
+function updateInstructionWithSize() {
+    console.log("Function updateInstructionWithSize called");
 
+    const bbox = g.node().getBBox();
 
-    function updateInstructionWithSize() {
-       
-        console.log("Function updateInstructionWithSize called");
-        
-        const bbox = g.node().getBBox();
-        
-        // Log the bounding box details to console
-        console.log("Bounding Box:", bbox);
-    
-        const widthInCm = (bbox.width / pixelsPerCm).toFixed(2);
-        const heightInCm = (bbox.height / pixelsPerCm).toFixed(2);
-            // Determine the maximum dimension
-        const maxSize = Math.max(widthInCm, heightInCm);
+    // Log the bounding box details to console
+    console.log("Bounding Box:", bbox);
+
+    const widthInCm = (bbox.width / pixelsPerCm).toFixed(2);
+    const heightInCm = (bbox.height / pixelsPerCm).toFixed(2);
+    // Determine the maximum dimension
+    const maxSize = Math.max(widthInCm, heightInCm);
 
     // Update the size indicator slider
     updateSizeIndicator(maxSize);
 
-        let sizeInfo = `Size: Width: ${widthInCm} cm, Height: ${heightInCm} cm`;
-        console.log("Size Info:", sizeInfo);
-    
-        // Set the primary size information
-        instructionParagraph.textContent = sizeInfo;  // Add this line
-    
-        const instructionBox = instructionParagraph.parentElement;
+    let sizeInfo = `Size: Width: ${widthInCm} cm, Height: ${heightInCm} cm`;
+    console.log("Size Info:", sizeInfo);
 
-        
-        instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
+    // Set the primary size information
+    instructionParagraph.textContent = sizeInfo; // Add this line
 
-   // Zoom out warning
-   if (widthInCm > 50 || heightInCm > 30) {
-    addWarning(instructionBox, "Zoom out to see the whole pattern. To adjust pattern size, consider remapping by dividing the values in variable section!");
-}
-
-// Narrow loop warning
-if (loopWidth < 10) {
-    addWarning(instructionBox, "The loops are too narrow and they may burn in laser cutting. Consider increasing their size.");
-}
-
-// Wide joint warning
-if (jointWidth > 20) {
-    addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
-}
-
-    let expandabilityScore = calculateExpandability();
-    const instructionBox = document.querySelector('.instruction-box');
+    const instructionBox = instructionParagraph.parentElement;
 
     // Clear existing warnings
     instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
 
-    // Add specific warnings based on expandability score
+    // Zoom out warning
+    if (widthInCm > 50 || heightInCm > 30) {
+        addWarning(instructionBox, "Zoom out to see the whole pattern. To adjust pattern size, consider remapping by dividing the values in variable section!");
+    }
+
+    // Narrow loop warning
+    if (loopWidth < 10) {
+        addWarning(instructionBox, "The loops are too narrow and they may burn in laser cutting. Consider increasing their size.");
+    }
+
+    // Wide joint warning
+    if (jointWidth > 20) {
+        addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
+    }
+
+    // Calculate expandability score
+    let expandabilityScore = calculateExpandability();
+
+    // Specific warnings based on factors affecting expandability
     if (expandabilityScore <= 0) {
         if (joints > 20) {
             addWarning(instructionBox, "Too many joints are reducing expandability. Try reducing the number of joints.");
@@ -1573,9 +1567,10 @@ if (jointWidth > 20) {
         }
     }
 
-// Too many joints warning
-if (joints > 20 && jointWidth > 5) {
-    addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
+    // Too many joints warning
+    if (joints > 20 && jointWidth > 5) {
+        addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
+    }
 }
 
     
