@@ -1,0 +1,42 @@
+[
+    {
+        "Country": "Brazil",
+        "Consumption 2021 (Metric Tons)": 35000,
+        "Production 2021 (Metric Tons)": 48000,
+        "Coffee Shops 2021": 25000,
+        "Price per Cup 2021 (USD)": 0.6,
+        "Export Volume 2021 (Metric Tons)": 40000
+    },
+    {
+        "Country": "USA",
+        "Consumption 2021 (Metric Tons)": 29000,
+        "Production 2021 (Metric Tons)": 1100,
+        "Coffee Shops 2021": 32000,
+        "Price per Cup 2021 (USD)": 2.7,
+        "Export Volume 2021 (Metric Tons)": 250
+    },
+    {
+        "Country": "Germany",
+        "Consumption 2021 (Metric Tons)": 21000,
+        "Production 2021 (Metric Tons)": 550,
+        "Coffee Shops 2021": 16000,
+        "Price per Cup 2021 (USD)": 3.2,
+        "Export Volume 2021 (Metric Tons)": 150
+    },
+    {
+        "Country": "Japan",
+        "Consumption 2021 (Metric Tons)": 13000,
+        "Production 2021 (Metric Tons)": 250,
+        "Coffee Shops 2021": 11000,
+        "Price per Cup 2021 (USD)": 4.2,
+        "Export Volume 2021 (Metric Tons)": 75
+    },
+    {
+        "Country": "Ethiopia",
+        "Consumption 2021 (Metric Tons)": 4500,
+        "Production 2021 (Metric Tons)": 7500,
+        "Coffee Shops 2021": 2500,
+        "Price per Cup 2021 (USD)": 1.7,
+        "Export Volume 2021 (Metric Tons)": 7000
+    }
+]
