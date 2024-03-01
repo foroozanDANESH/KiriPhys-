@@ -1509,68 +1509,54 @@ document.querySelector('#datasets').addEventListener('change', function(e) {
     
         return cmDimensions;
     }
+   
 function updateInstructionWithSize() {
-    console.log("Function updateInstructionWithSize called");
-
-    const bbox = g.node().getBBox();
-
-    // Log the bounding box details to console
-    console.log("Bounding Box:", bbox);
-
-    const widthInCm = (bbox.width / pixelsPerCm).toFixed(2);
-    const heightInCm = (bbox.height / pixelsPerCm).toFixed(2);
-    // Determine the maximum dimension
-    const maxSize = Math.max(widthInCm, heightInCm);
-
+       
+        console.log("Function updateInstructionWithSize called");
+        
+        const bbox = g.node().getBBox();
+        
+        // Log the bounding box details to console
+        console.log("Bounding Box:", bbox);
+    
+        const widthInCm = (bbox.width / pixelsPerCm).toFixed(2);
+        const heightInCm = (bbox.height / pixelsPerCm).toFixed(2);
+            // Determine the maximum dimension
+        const maxSize = Math.max(widthInCm, heightInCm);
     // Update the size indicator slider
     updateSizeIndicator(maxSize);
+        let sizeInfo = `Size: Width: ${widthInCm} cm, Height: ${heightInCm} cm`;
+        console.log("Size Info:", sizeInfo);
+    
+        // Set the primary size information
+        instructionParagraph.textContent = sizeInfo;  // Add this line
+    
+        const instructionBox = instructionParagraph.parentElement;
+        
+        instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
+   // Zoom out warning
+   if (widthInCm > 50 || heightInCm > 30) {
+    addWarning(instructionBox, "Zoom out to see the whole pattern. To adjust pattern size, consider remapping by dividing the values in variable section!");
+}
+// Narrow loop warning
+if (loopWidth < 10) {
+    addWarning(instructionBox, "The loops are too narrow and they may burn in laser cutting. Consider increasing their size.");
+}
+// Wide joint warning
+if (jointWidth > 20) {
+    addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
+}
 
-    let sizeInfo = `Size: Width: ${widthInCm} cm, Height: ${heightInCm} cm`;
-    console.log("Size Info:", sizeInfo);
+ let expandabilityScore = calculateExpandability();
+    console.log("Expandability Score:", expandabilityScore);
 
-    // Set the primary size information
-    instructionParagraph.textContent = sizeInfo; // Add this line
-
-    const instructionBox = instructionParagraph.parentElement;
-
-    // Clear existing warnings
-    instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
-
-    // Zoom out warning
-    if (widthInCm > 50 || heightInCm > 30) {
-        addWarning(instructionBox, "Zoom out to see the whole pattern. To adjust pattern size, consider remapping by dividing the values in variable section!");
+    // Add warning if expandability score is 0
+    if (expandabilityScore === 0) {
+        addWarning(instructionBox, "Expandability is minimal. Consider adjusting design parameters for better expandability.");
     }
-
-    // Narrow loop warning
-    if (loopWidth < 10) {
-        addWarning(instructionBox, "The loops are too narrow and they may burn in laser cutting. Consider increasing their size.");
-    }
-
-    // Wide joint warning
-    if (jointWidth > 20) {
-        addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
-    }
-
-    // Calculate expandability score
-    let expandabilityScore = calculateExpandability();
-
-    // Specific warnings based on factors affecting expandability
-    if (expandabilityScore <= 0) {
-        if (joints > 20) {
-            addWarning(instructionBox, "Too many joints are reducing expandability. Try reducing the number of joints.");
-        } else if (jointWidth > 20) {
-            addWarning(instructionBox, "Joints are too wide, negatively impacting expandability. Consider reducing joint width.");
-        } else if (loopWidth < 10) {
-            addWarning(instructionBox, "Loops are too narrow, affecting expandability. Increasing loop width might help.");
-        } else {
-            addWarning(instructionBox, "Expandability is too low. Adjust the design parameters for better expandability.");
-        }
-    }
-
-    // Too many joints warning
-    if (joints > 20 && jointWidth > 5) {
-        addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
-    }
+// Too many joints warning
+if (joints > 20 && jointWidth > 5) {
+    addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
 }
 
     
