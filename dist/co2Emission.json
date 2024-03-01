@@ -1,7 +1,7 @@
 [
-    { "Region": "World", "co2_1990": 22674.12, "co2_2017": 37077.40, "population": 35247.21, "per_capita emission": 4.9 },
-    { "Region": "China", "co2_1990": 2397.05, "co2_2017": 10877.22, "population": 10313.46, "per_capita emission": 7.7 },
-    { "Region": "United States", "co2_1990": 5085.90, "co2_2017": 5107.39, "population": 4981.30, "per_capita emission": 15.7 },
-    { "Region": "European Union", "co2_1990": 4409.34, "co2_2017": 3548.35, "population": 2871, "per_capita emission": 7 }
+    { "Region": "World", "co2_1990": 2267, "co2_2017": 3707, "population": 8100, "per_capita emission": 4.9 },
+    { "Region": "China", "co2_1990": 239, "co2_2017": 108, "population": 1425, "per_capita emission": 7.7 },
+    { "Region": "United States", "co2_1990": 508, "co2_2017": 510, "population": 331, "per_capita emission": 15.7 },
+    { "Region": "European Union", "co2_1990": 440, "co2_2017": 354, "population": 448, "per_capita emission": 7 }
     
 ]
