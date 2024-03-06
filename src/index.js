@@ -2143,6 +2143,7 @@ document.querySelector('#poly-sides').addEventListener('input', function(e) {
         if (num >= 0 && num < 100) {
             joints = num;
             drawVisualization();
+           updateInstructionWithSize(joints);
         }
     });
 
