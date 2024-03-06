@@ -623,6 +623,7 @@ function drawCircle() {
 document.querySelector('#radius').addEventListener('input', function(e) {
     const newRadius = e.target.value;
     updateVisualization('radius', newRadius); // Call with the 'radius' inputId
+   
 });
 
 
@@ -642,6 +643,7 @@ document.querySelector('#arc-orientation').addEventListener('input', function(e)
 document.querySelector('#loop-width').addEventListener('input', function(e) {
     loopWidth = +e.target.value;
     drawCircle(); // Redraw the circle when loop width changes
+   updateInstructionWithSize(loopWidth);
 });
 
 document.querySelector('#joint-width').addEventListener('input', function(e) {
@@ -907,6 +909,7 @@ document.querySelector('#joint-number').addEventListener('input', function(e) {
     console.log('joint number changed');  
     if (currentShape === 'line') {
         drawLine();
+     
     }
 });
 
