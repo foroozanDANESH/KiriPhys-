@@ -1008,7 +1008,7 @@ function handleDrop(event) {
         // Call to update sliders
         updateSliderPosition();
         updateCountabilitySliderPosition();
-        updateWarnings(); 
+       
         updateInstructionWithSize();
         // Debugging after calling update functions
         console.log("Slider update functions called");
@@ -1584,6 +1584,7 @@ if (joints > 20 && jointWidth > 5) {
             
             
             updateWarnings();
+            updateInstructionWithSize();
     }
         
   
