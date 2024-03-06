@@ -1590,30 +1590,6 @@ if (joints > 20 && jointWidth > 5) {
   
 
 
-        function updateWarnings() {
-            const instructionBox = document.querySelector('.instruction-box'); // Replace with your actual selector
-        
-            // Clear existing warnings
-            instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
-        
-            // Add warnings based on current input values
-            if (loopWidth < 10) {
-                console.log("Adding narrow loop warning"); // Log when this condition is met
-
-                addWarning(instructionBox, "The loops are too narrow and they may burn in laser cutting. Consider increasing their size.");
-            }
-        
-        
-            if (jointWidth > 20) {
-                addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
-            }
-        
-            if (joints > 30) {
-                addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
-            }
-        
-        }
-
 
     // Draw the bounding box (red rectangle) around the g group's content
         g.append('rect')
