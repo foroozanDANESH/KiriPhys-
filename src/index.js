@@ -1107,6 +1107,7 @@ function setupInitialOperation(inputElement, columnHeader, operation, factor) {
     updateOperationText(inputElement, columnHeader, operation, factor);
     updateSliderPosition();  // Assuming this function updates a slider related to the operation
     updateCountabilitySliderPosition();  // Assuming this function updates another slider
+    updateInstructionWithSize();
 }
 
 function updateOperationText(inputElement, columnHeader, operation, factor) {
@@ -1787,6 +1788,7 @@ if (joints > 20 && jointWidth > 5) {
                     // Call to update sliders
                     updateSliderPosition();
                     updateCountabilitySliderPosition();
+                    updateInstructionWithSize();
                 }
             }
         });
