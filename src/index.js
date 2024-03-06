@@ -1008,7 +1008,7 @@ function handleDrop(event) {
         // Call to update sliders
         updateSliderPosition();
         updateCountabilitySliderPosition();
-
+        updateWarnings(); 
         // Debugging after calling update functions
         console.log("Slider update functions called");
     }
