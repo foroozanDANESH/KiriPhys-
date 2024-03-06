@@ -1583,7 +1583,7 @@ if (joints > 20 && jointWidth > 5) {
             }
             
             
-            updateWarnings();
+       
             updateInstructionWithSize();
     }
         
