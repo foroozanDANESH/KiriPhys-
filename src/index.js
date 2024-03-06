@@ -649,6 +649,7 @@ document.querySelector('#loop-width').addEventListener('input', function(e) {
 document.querySelector('#joint-width').addEventListener('input', function(e) {
     jointWidth = +e.target.value; // Note: jointWidth might need to be adjusted based on your design (e.g., jointRadius = jointWidth / 2)
     drawCircle(); // Redraw the circle when joint width changes
+   updateInstructionWithSize(jointWidth); 
 });
 
 document.querySelector('#joint-number').addEventListener('input', function(e) {
@@ -659,6 +660,7 @@ document.querySelector('#joint-number').addEventListener('input', function(e) {
 document.querySelector('#loop-number').addEventListener('input', function(e) {
     loops = +e.target.value;
     drawCircle(); // Redraw the circle when the number of loops changes
+   updateInstructionWithSize(loops); 
 });
 
 
@@ -1011,7 +1013,8 @@ function handleDrop(event) {
         // Call to update sliders
         updateSliderPosition();
         updateCountabilitySliderPosition();
-         updateInstructionWithSize();
+        updateWarnings();
+        updateInstructionWithSize();
         // Debugging after calling update functions
         console.log("Slider update functions called");
     }
@@ -2131,6 +2134,7 @@ document.querySelector('#poly-sides').addEventListener('input', function(e) {
         if (num >= 0 && num < 1000) {
             loops = num;
             drawVisualization();
+           updateInstructionWithSize(loops); 
         }
     });
 
