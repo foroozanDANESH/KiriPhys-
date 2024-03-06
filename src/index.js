@@ -641,6 +641,7 @@ document.querySelector('#arc-orientation').addEventListener('input', function(e)
 document.querySelector('#loop-width').addEventListener('input', function(e) {
     loopWidth = +e.target.value;
     drawCircle(); // Redraw the circle when loop width changes
+   updateInstructionWithSize(loopWidth);
 });
 
 document.querySelector('#joint-width').addEventListener('input', function(e) {
