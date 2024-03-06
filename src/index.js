@@ -1564,7 +1564,7 @@ if (jointWidth > 20) {
         addWarning(instructionBox, "Expandability is minimal. Consider adjusting design parameters for better expandability.");
     }
 // Too many joints warning
-if (joints > 20 && jointWidth > 5) {
+if (joints > 20) {
     addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
 }
 
