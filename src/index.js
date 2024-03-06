@@ -641,7 +641,6 @@ document.querySelector('#arc-orientation').addEventListener('input', function(e)
 document.querySelector('#loop-width').addEventListener('input', function(e) {
     loopWidth = +e.target.value;
     drawCircle(); // Redraw the circle when loop width changes
-   updateInstructionWithSize(loopWidth);
 });
 
 document.querySelector('#joint-width').addEventListener('input', function(e) {
@@ -1008,8 +1007,7 @@ function handleDrop(event) {
         // Call to update sliders
         updateSliderPosition();
         updateCountabilitySliderPosition();
-       
-        updateInstructionWithSize();
+         updateInstructionWithSize();
         // Debugging after calling update functions
         console.log("Slider update functions called");
     }
@@ -1583,12 +1581,35 @@ if (joints > 20 && jointWidth > 5) {
             }
             
             
-       
-            updateInstructionWithSize();
+            updateWarnings();
     }
         
   
 
+
+        function updateWarnings() {
+            const instructionBox = document.querySelector('.instruction-box'); // Replace with your actual selector
+        
+            // Clear existing warnings
+            instructionBox.querySelectorAll('.warning').forEach(warning => warning.remove());
+        
+            // Add warnings based on current input values
+            if (loopWidth < 10) {
+                console.log("Adding narrow loop warning"); // Log when this condition is met
+
+                addWarning(instructionBox, "The loops are too narrow and they may burn in laser cutting. Consider increasing their size.");
+            }
+        
+        
+            if (jointWidth > 20) {
+                addWarning(instructionBox, "The joints are too wide and leave minimal space for expansion.");
+            }
+        
+            if (joints > 30) {
+                addWarning(instructionBox, "There are too many joints and they leave minimal cut area.");
+            }
+        
+        }
 
 
     // Draw the bounding box (red rectangle) around the g group's content
