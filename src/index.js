@@ -2034,6 +2034,7 @@ window.onload = function() {
         input.addEventListener('input', function() {
             updateSliderPosition();
             updateCountabilitySliderPosition();
+            updateInstructionWithSize();
         });
     });
     updateSliderPosition();
