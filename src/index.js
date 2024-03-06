@@ -324,6 +324,7 @@ function drawShape(shapeType) {
             break;   
     }
     updateInstructionWithSize();
+   
 }
 
 
@@ -1253,6 +1254,7 @@ function updateVisualization(inputId, newValue, meta = {}) {
     }
     drawVisualization();  // Redraw the visualization with the new values
     updateLegend(inputId, `${meta.rowName}'s ${meta.columnName}: ${newValue}`, true); // Update the legend
+   updateInstructionWithSize();
 }
 
     
